@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,13 +28,14 @@ import lombok.ToString;
 public class Task {
     
     private int taskId; // Unique identifier for the task
-    String subject;     // Subject of the task
-    String description; // Description of the task
-    int clientId;       // Client associated with the task
-    LocalDate date;     // Date associated with the task
-    String dateS;       // String representation of the date
-    LocalTime time;     // Time associated with the task
-    String timeS;       // String representation of the time
+    private String subject;     // Subject of the task
+    private String description; // Description of the task
+    private int clientId;       // Client associated with the task
+    private LocalDate date;     // Date associated with the task
+    private String dateS;       // String representation of the date
+    private LocalTime time;     // Time associated with the task
+    private String timeS;       // String representation of the time
+    private TaskStatus status;
 
     DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -59,6 +61,20 @@ public class Task {
         this.time = LocalTime.of(hour, minute, 0);
         this.dateS = date.format(DATE_FORMATTER);
         this.timeS = time.format(TIME_FORMATTER);
+        this.status = calculateStatus();
+    }
+    
+    // Metoda obliczająca status na podstawie daty wykonania zadania
+    private TaskStatus calculateStatus() {
+        long daysUntilDue = ChronoUnit.DAYS.between(LocalDate.now(), date);
+
+        if (daysUntilDue <= 3) {
+            return TaskStatus.DUE_SOON;
+        } else if (daysUntilDue <= 7) {
+            return TaskStatus.DUE_THIS_WEEK;
+        } else {
+            return TaskStatus.LONG_TERM;
+        }
     }
 
     /**
@@ -90,6 +106,7 @@ public class Task {
     public void setDate(LocalDate date) {
         this.date = date;
         this.dateS = date.format(DATE_FORMATTER);
+        this.status = calculateStatus();
     }
 
     /**
@@ -112,6 +129,7 @@ public class Task {
         try {
             this.date = LocalDate.parse(dateS, DATE_FORMATTER);
             this.dateS = dateS;
+            this.status = calculateStatus();
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid date format: " + dateS);
         }

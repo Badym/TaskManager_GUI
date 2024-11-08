@@ -152,7 +152,7 @@ public class AddTaskViewController implements Initializable {
     private void populateClientComboBox() {
         List<Client> clients = user.getClientList(); 
 
-        for (Client client : clients) {
+        for (Client client : clients) {           //petla foreach
             newIdClient.getItems().add(client);
         }
 

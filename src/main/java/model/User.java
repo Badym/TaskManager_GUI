@@ -42,12 +42,16 @@ public class User {
         Client c1 = new Client("Pati", "Monika", "432789234", "2class");
         Client c2 = new Client("Bartek", "Klaudia", "506923876", "Good");
         Client c3 = new Client("Michal", "Krzysztof", "123456780", "Bad");
-        this.addClient(c1);
-        this.addClient(c2);
-        this.addClient(c3);
+        this.addClient(c1,c2,c3);
+
         
-        Task t1 = new Task("Matematyka", "nowy lol", 2, 2024, 12, 23, 12, 30);
-        this.addTask(t1);
+        Task t1 = new Task("Przedmiot 1", "Opis zadania 1", 3, 2024, 11, 15, 20, 10);
+        Task t2 = new Task("Przedmiot 2", "Opis zadania 2", 8, 2024, 11, 12, 14, 58);
+        Task t3 = new Task("Przedmiot 3", "Opis zadania 3", 8, 2024, 11, 26, 5, 2);
+        Task t4 = new Task("Przedmiot 4", "Opis zadania 4", 4, 2024, 11, 15, 9, 36);
+        Task t5 = new Task("Przedmiot 5", "Opis zadania 5", 4, 2024, 11, 10, 14, 35);
+
+        this.addTask(t1,t2,t3,t4,t5);
     }
 
     /**
@@ -55,9 +59,11 @@ public class User {
      * 
      * @param newTask The new task to be added to the user's task list.
      */
-    public void addTask(Task newTask) {
-        taskList.add(newTask);
-        newTask.setTaskId(this.taskList.size()); // Assign task ID based on list size
+    public void addTask(Task... tasks) {
+        for (Task task : tasks) {
+            taskList.add(task);
+            task.setTaskId(this.taskList.size()); // Assign task ID based on list size
+        }
     }
 
     /**
@@ -65,9 +71,11 @@ public class User {
      * 
      * @param newClient The new client to be added to the user's client list.
      */
-    public void addClient(Client newClient) {
-        clientList.add(newClient);
-        newClient.setClientId(this.clientList.size()); // Assign client ID based on list size
+    public void addClient(Client... clients) {
+        for (Client newClient : clients) {
+            clientList.add(newClient);
+            newClient.setClientId(this.clientList.size()); // Assign client ID based on list size
+        }
     }
 //
 //    /**

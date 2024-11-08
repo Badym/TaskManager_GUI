@@ -22,6 +22,9 @@
                   <TableColumn fx:id="time" prefWidth="104.79998779296875" text="time " />
                </columns>
             </TableView>
+            <Button fx:id="showDueSoonButton" layoutX="48.0" layoutY="345.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="114.0" text="Soon" />
+            <Button fx:id="showDueThisWeekButton" layoutX="243.0" layoutY="345.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="114.0" text="This week" />
+            <Button fx:id="showLongTermButton" layoutX="433.0" layoutY="345.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="114.0" text="Long term" />
          </children>
       </AnchorPane>
    </children>

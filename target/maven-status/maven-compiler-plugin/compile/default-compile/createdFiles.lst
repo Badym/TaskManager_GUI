@@ -6,6 +6,7 @@ com\mycompany\taskmanager_gui\App.class
 controller\AddTaskViewController$1.class
 controller\ClientViewController.class
 controller\MainViewController.class
+model\TaskStatus.class
 controller\TaskViewController.class
 module-info.class
 model\ValidationException.class

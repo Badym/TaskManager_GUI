@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import model.Task;
+import model.TaskStatus;
 import model.User;
 import model.ValidationException;
 
@@ -57,6 +60,13 @@ public class TaskViewController implements Initializable {
     private TableColumn<Task, String> date;
     @FXML
     private TableColumn<Task, String> time;
+    
+    @FXML
+    private Button showDueSoonButton;
+    @FXML
+    private Button showDueThisWeekButton;
+    @FXML
+    private Button showLongTermButton;
 
     private final ObservableList<Task> data;
     private final User user;
@@ -76,6 +86,10 @@ public class TaskViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        showDueSoonButton.setOnAction(event -> displayFilteredTasks(TaskStatus.DUE_SOON));
+        showDueThisWeekButton.setOnAction(event -> displayFilteredTasks(TaskStatus.DUE_THIS_WEEK));
+        showLongTermButton.setOnAction(event -> displayFilteredTasks(TaskStatus.LONG_TERM));
 
         // Set tooltips for buttons
         addTaskButton.setTooltip(new Tooltip("Add new task"));
@@ -158,6 +172,21 @@ public class TaskViewController implements Initializable {
             }
         });
     }
+    
+    /**
+    * Filtrowanie i wyświetlanie zadań o określonym statusie w ListView.
+    * @param status Status zadań, które mają być wyświetlone
+    */
+   private void displayFilteredTasks(TaskStatus status) {
+       // Filtrowanie zadań przy użyciu strumienia
+       List<Task> filteredTasks = user.getTaskList().stream()
+               .filter(task -> task.getStatus() == status) // filtrujemy według statusu
+               .collect(Collectors.toList()); // Zbieramy zadania do listy Tasków
+
+       // Wyczyszczenie ListView i dodanie przefiltrowanych zadań
+       data.clear(); // Czyszczenie ListView przed dodaniem nowych zadań
+       data.addAll(filteredTasks); // Dodanie przefiltrowanych zadań do ListView
+   }
 
     /**
      * Shows an alert dialog with the specified title and content.
