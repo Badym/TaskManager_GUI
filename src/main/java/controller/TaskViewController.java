@@ -118,29 +118,26 @@ public class TaskViewController implements Initializable {
         // Editing behavior for Subject column with validation
         subject.setOnEditCommit(event -> {
             String newValue = event.getNewValue();
-            if (newValue == null || newValue.trim().isEmpty()) {
-                showAlert("Validation Error", "Subject name cannot be empty.");
-                event.getTableView().refresh(); // Reset to previous value if invalid
-            } else {
+            try{
                 event.getRowValue().setSubject(newValue); // Update model with new value
+            }catch(ValidationException e){
+                showAlert("Validation Error", e.getMessage());
+                event.getTableView().refresh();
             }
+            
         });
 
         // Editing behavior for Description column with validation
         description.setOnEditCommit(event -> {
             String newValue = event.getNewValue();
-            if (newValue == null || newValue.trim().isEmpty()) {
-                showAlert("Validation Error", "Description cannot be empty.");
-                event.getTableView().refresh();
-            } else {
-                event.getRowValue().setDescription(newValue);
-            }
+            event.getRowValue().setDescription(newValue);
+          
         });
 
         // Editing behavior for Client ID column with validation
         clientId.setOnEditCommit(event -> {
             int newValue = event.getNewValue();
-            if (newValue > user.getTaskList().size() || newValue < 0) {
+            if (newValue > user.getClientList().size() || newValue < 0) {
                 showAlert("Validation Error", "Invalid client ID.");
                 event.getTableView().refresh();
             } else {
@@ -178,14 +175,13 @@ public class TaskViewController implements Initializable {
     * @param status Status zadań, które mają być wyświetlone
     */
    private void displayFilteredTasks(TaskStatus status) {
-       // Filtrowanie zadań przy użyciu strumienia
+       
        List<Task> filteredTasks = user.getTaskList().stream()
-               .filter(task -> task.getStatus() == status) // filtrujemy według statusu
-               .collect(Collectors.toList()); // Zbieramy zadania do listy Tasków
+               .filter(task -> task.getStatus() == status) 
+               .collect(Collectors.toList()); 
 
-       // Wyczyszczenie ListView i dodanie przefiltrowanych zadań
-       data.clear(); // Czyszczenie ListView przed dodaniem nowych zadań
-       data.addAll(filteredTasks); // Dodanie przefiltrowanych zadań do ListView
+       data.clear(); 
+       data.addAll(filteredTasks); 
    }
 
     /**

@@ -40,6 +40,43 @@ public class Client {
         this.phoneNumber = phoneNumber;
         this.description = description;
     }
+    
+    /**
+    * Sets the parent name for the object.
+    * Validates that the provided name is not null, not empty, and starts with an uppercase letter.
+    *
+    * @param newName the new name to set for the parent
+    * @throws ValidationException if the name is null, empty, or does not start with an uppercase letter
+    */
+   public void setParentName(String newName) throws ValidationException {
+       if (newName == null || newName.trim().isEmpty()) {
+           throw new ValidationException("cant be null");
+       }
+       if (!Character.isUpperCase(newName.charAt(0))) {
+           throw new ValidationException("Parent name upper case");
+       } else {
+           parentName = newName;
+       }
+   }
+
+   /**
+    * Sets the student name for the object.
+    * Validates that the provided name is not null, not empty, and starts with an uppercase letter.
+    *
+    * @param newName the new name to set for the student
+    * @throws ValidationException if the name is null, empty, or does not start with an uppercase letter
+    */
+   public void setStudentName(String newName) throws ValidationException {
+       if (newName == null || newName.isEmpty()) {
+           throw new ValidationException("Parent name cannot be null or empty");
+       }
+       if (!Character.isUpperCase(newName.charAt(0))) {
+           throw new ValidationException("Parent name must start with an uppercase letter");
+       }
+       studentName = newName;
+   }
+
+
 
     /**
      * Sets the phone number of the client, validating that it contains exactly 9 digits.
@@ -67,4 +104,5 @@ public class Client {
             throw ValidationException.invalidPhoneNumber(phoneNumber);
         }
     }
+    
 }

@@ -64,7 +64,19 @@ public class Task {
         this.status = calculateStatus();
     }
     
-    // Metoda obliczająca status na podstawie daty wykonania zadania
+    public void setSubject(String newSubject) throws ValidationException {
+        if(newSubject == null || newSubject.trim().isEmpty()){
+            throw new ValidationException("invalid subject");
+        }else{
+            subject = newSubject;
+        }
+    }
+    
+    /**
+    * Calculates the task's status based on days until the due date.
+    * 
+    * @return the {@link TaskStatus} indicating the task's due status.
+    */
     private TaskStatus calculateStatus() {
         long daysUntilDue = ChronoUnit.DAYS.between(LocalDate.now(), date);
 
@@ -125,7 +137,7 @@ public class Task {
      * @param dateS The date string to set, formatted as yyyy-MM-dd.
      * @throws IllegalArgumentException if the date format is invalid.
      */
-    public void setDateS(String dateS) {
+    public void setDateS(String dateS) throws IllegalArgumentException {
         try {
             this.date = LocalDate.parse(dateS, DATE_FORMATTER);
             this.dateS = dateS;
@@ -141,7 +153,7 @@ public class Task {
      * @param timeS The time string to set, formatted as HH:mm.
      * @throws IllegalArgumentException if the time format is invalid.
      */
-    public void setTimeS(String timeS) {
+    public void setTimeS(String timeS) throws IllegalArgumentException {
         try {
             this.timeS = timeS;
             this.time = LocalTime.parse(this.timeS, TIME_FORMATTER);

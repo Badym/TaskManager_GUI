@@ -122,15 +122,13 @@ public class ClientViewController implements Initializable {
      */
     private void handleStudentNameEdit(TableColumn.CellEditEvent<Client, String> t) {
         String newValue = t.getNewValue();
-        if (newValue == null || newValue.trim().isEmpty()) {
-            showAlert("Validation Error", "Student name cannot be empty.");
-            t.getTableView().refresh();
-        } else if (!Character.isUpperCase(newValue.charAt(0))) {
-            showAlert("Validation Error", "Student name must start with a capital letter.");
-            t.getTableView().refresh();
-        } else {
+        try{
             t.getRowValue().setStudentName(newValue);
+        }catch(ValidationException e){
+            showAlert("Validation Error", e.getMessage());
+            t.getTableView().refresh();
         }
+        
     }
 
     /**
@@ -140,11 +138,11 @@ public class ClientViewController implements Initializable {
      */
     private void handleParentNameEdit(TableColumn.CellEditEvent<Client, String> t) {
         String newValue = t.getNewValue();
-        if (!Character.isUpperCase(newValue.charAt(0))) {
-            showAlert("Validation Error", "Parent name must start with a capital letter.");
-            t.getTableView().refresh();
-        } else {
+        try{
             t.getRowValue().setParentName(newValue);
+        }catch(ValidationException e){
+            showAlert("Validation Error", e.getMessage());
+            t.getTableView().refresh();
         }
     }
 
